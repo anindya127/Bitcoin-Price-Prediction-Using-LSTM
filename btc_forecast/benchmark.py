@@ -96,7 +96,7 @@ def to_markdown(result: dict) -> str:
              "|---|---|---|---|---|---|"]
     for r in rows:
         da = "n/a" if np.isnan(r["dir_acc"][0]) else f"{100 * r['dir_acc'][0]:.1f} ± {100 * r['dir_acc'][1]:.1f}"
-        dm = "-" if r["model"].startswith("Naive") else f"{r['dm_p'][0]:.3f}"
+        dm = "-" if r["model"].startswith("Naive") else ("<0.001" if r["dm_p"][0] < 0.0005 else f"{r['dm_p'][0]:.3f}")
         lines.append(f"| {r['model']} | {f(r['rmse_usd'])} | {f(r['mae_usd'])} | {r['rmse_ratio_vs_naive'][0]:.3f} ± "
                      f"{r['rmse_ratio_vs_naive'][1]:.3f} | {da} | {dm} |")
     lines += ["", f"Share of up-days in the test period (accuracy of 'always up'): {100 * rows[0]['up_share']:.1f}%.",
