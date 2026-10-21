@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install (with TensorFlow)
+        run: pip install -e ".[dev,tf]"
+      - name: Run tests
+        run: pytest -q
+      - name: Smoke-run the CLI on the committed snapshot (no LSTM)
+        run: python -m btc_forecast run --no-lstm --out /tmp/results --docs /tmp/docs
