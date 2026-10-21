@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "btc-forecast"
+version = "1.0.0"
+description = "Walk-forward benchmark of next-day BTC log-return forecasts: LSTM vs. naive, drift, moving average and ridge."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Anindya Mozumder" }]
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.0",
+    "scikit-learn>=1.4",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+tf = ["tensorflow-cpu>=2.16"]
+dev = ["pytest>=8"]
+download = ["yfinance>=0.2"]
+
+[project.scripts]
+btc-forecast = "btc_forecast.cli:main"
+
+[tool.setuptools]
+packages = ["btc_forecast"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
